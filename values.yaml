@@ -1,0 +1,30 @@
+Name: tsung
+
+image:
+  repository: ddragosd/tsung-docker
+  tag: 1.6.0
+  pullPolicy: IfNotPresent
+  pullSecrets: []
+
+config:
+  # Optional parameter to use an existing configmap instead of deploying one with the Chart
+  # configmapName: tsung-config
+
+  # all files from specified configmap (or configs folder) are mounted under `/tsung`
+  configfile: "config.xml"
+
+service:
+  type: NodePort
+  externalPort: 32091
+  internalPort: 8091
+  annotations: {}
+  extraLabels: {}
+
+master:
+  nodeSelector: {}
+  tolerations: {}
+
+slave:
+  replicaCount: 2
+  nodeSelector: {}
+  tolerations: {}

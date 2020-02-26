@@ -1,0 +1,76 @@
+---
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: {{ template "tsung.master" . }}
+  labels:
+    app: {{ template "tsung.fullname" . }}
+    heritage: {{ .Release.Service | quote }}
+    release: {{ .Release.Name | quote }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    component: master
+spec:
+  serviceName: {{ template "tsung.master-svc" . }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ template "tsung.fullname" . }}
+        heritage: {{ .Release.Service | quote }}
+        release: {{ .Release.Name | quote }}
+        chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+        component: master
+    spec:
+      containers:
+      - name: tsung
+        image: ddragosd/tsung-docker:1.6.0
+        env:
+        - name: ERL_SSH_PORT
+          value: "22"
+        args:
+        - -k
+        - -f
+        - "/tsung/{{ .Values.config.configfile }}"
+        - -F
+        - start
+        volumeMounts:
+        - mountPath: /tsung
+          name: config-volume
+      terminationGracePeriodSeconds: 2
+      readinessProbe:
+        initialDelaySeconds: 60
+      initContainers:
+      - name: init-wait
+        image: busybox:1.28
+        command: ['sh', '-c', 'i=20; echo Waiting $i seconds for slaves to come up...; while [ $i -gt 0 ];do if [ $i -gt 9 ];then echo "$i";else  echo "$i";fi;sleep 1;i=`expr $i - 1`;done;exit 0']
+      volumes:
+      - name: config-volume
+        configMap:
+          name: {{ template "tsung.configmap" . }}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: {{ template "tsung.fullname" . }}
+    heritage: {{ .Release.Service | quote }}
+    release: {{ .Release.Name | quote }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    component: master
+  name: {{ template "tsung.master-svc" . }}
+spec:
+  selector:
+    app: {{ template "tsung.fullname" . }}
+    heritage: {{ .Release.Service | quote }}
+    release: {{ .Release.Name | quote }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    component: master
+  type: {{ .Values.service.type }}
+  ports:
+  - port: {{ .Values.service.internalPort }}
+    targetPort: 8091
+    nodePort: {{ .Values.service.externalPort }}
+    name: web-ui
+  sessionAffinity: None
+---

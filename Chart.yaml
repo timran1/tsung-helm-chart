@@ -1,0 +1,11 @@
+apiVersion: v1
+name: tsung
+description: Tsung distributed load generator
+version: 1.0.0
+maintainers:
+  - name: Talha Imran
+    email: m.talha.imran01@gmail.com
+home: http://tsung.erlang-projects.org/
+icon: http://tsung.erlang-projects.org/images/tsung-logo-v0.png
+sources:
+  - https://github.com/timran1/tsung-helm-chart

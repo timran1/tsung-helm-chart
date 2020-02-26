@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE tsung SYSTEM "/usr/share/tsung/tsung-1.0.dtd" []>
+<tsung loglevel="warning">
+    <clients>
+        <client host="ts-slave-0.ts-slave-svc.load-gen.svc.cluster.local"/>
+        <client host="ts-slave-1.ts-slave-svc.load-gen.svc.cluster.local"/>
+    </clients>
+    <servers>
+        <server host="traefik-expose.balancer" port="80" type="tcp"/>
+    </servers>
+    <load>
+        <arrivalphase phase="1" duration="10" unit="second">
+            <users arrivalrate="100" unit="second"/>
+        </arrivalphase>
+    </load>
+    <sessions>
+        <session name="es_load" weight="1" type="ts_http">
+            <request> <http url="/web-server" method="GET"></http> </request>
+        </session>
+    </sessions>
+</tsung>

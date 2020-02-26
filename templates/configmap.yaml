@@ -1,0 +1,13 @@
+{{ if not .Values.config.configmapName }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "tsung.configmap" . }}
+  labels:
+    heritage: {{ .Release.Service | quote }}
+    release: {{ .Release.Name | quote }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    app: {{ template "tsung.fullname" . }}
+data:
+{{ (.Files.Glob "configs/*").AsConfig | indent 2 }}
+{{ end }}
