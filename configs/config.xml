@@ -2,8 +2,9 @@
 <!DOCTYPE tsung SYSTEM "/usr/share/tsung/tsung-1.0.dtd" []>
 <tsung loglevel="warning">
     <clients>
-        <client host="ts-slave-0.ts-slave-svc.load-gen.svc.cluster.local"/>
-        <client host="ts-slave-1.ts-slave-svc.load-gen.svc.cluster.local"/>
+    {{- range until (int .Values.slave.replicaCount) }}
+        <client host='{{ template "tsung.slave" $ }}-{{ . }}.{{ template "tsung.slave-svc" $ }}.{{ template "tsung.namespace" $ }}.svc.cluster.local'/>
+    {{- end}}
     </clients>
     <servers>
         <server host="traefik-expose.balancer" port="80" type="tcp"/>

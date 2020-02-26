@@ -23,6 +23,14 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- printf "%s-%s" .Release.Name "slave-svc" | trunc 63 -}}
 {{- end -}}
 
+{{- define "tsung.namespace" -}}
+{{- printf "%s" .Release.Namespace -}}
+{{- end -}}
+
+{{- define "tsung.replicaCount" -}}
+{{- printf "%s" .Values.slave.replicaCount -}}
+{{- end -}}
+
 {{/*
 Create fully qualified configmap name.
 */}}
