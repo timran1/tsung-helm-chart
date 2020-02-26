@@ -41,3 +41,9 @@ Create fully qualified configmap name.
 {{- printf "%s-%s" .Release.Name "config" -}}
 {{ end }}
 {{- end -}}
+
+{{- define "tsung.clients" -}}
+{{- range until (int .Values.slave.replicaCount) }}
+        <client host='{{ template "tsung.slave" $ }}-{{ . }}.{{ template "tsung.slave-svc" $ }}.{{ template "tsung.namespace" $ }}.svc.cluster.local'/>
+{{- end -}}
+{{- end -}}
