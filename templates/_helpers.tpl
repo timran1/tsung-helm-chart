@@ -31,6 +31,10 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- printf "%s" .Values.slave.replicaCount -}}
 {{- end -}}
 
+{{- define "tsung.clusterbasename" -}}
+{{- printf "%s" .Values.config.clusterbasename -}}
+{{- end -}}
+
 {{/*
 Create fully qualified configmap name.
 */}}
@@ -47,6 +51,6 @@ Create a list of clients addresses to be placed in config XML
 */}}
 {{- define "tsung.clients" -}}
 {{- range until (int .Values.slave.replicaCount) }}
-        <client host='{{ template "tsung.slave" $ }}-{{ . }}.{{ template "tsung.slave-svc" $ }}.{{ template "tsung.namespace" $ }}.svc.cluster.local'/>
+        <client host='{{ template "tsung.slave" $ }}-{{ . }}.{{ template "tsung.slave-svc" $ }}.{{ template "tsung.namespace" $ }}.svc.{{ template "tsung.clusterbasename" $ }}'/>
 {{- end -}}
 {{- end -}}

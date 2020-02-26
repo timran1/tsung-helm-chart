@@ -11,10 +11,17 @@ config:
   # configmapName: tsung-config
 
   # Glob pattern to copy files into config map
+  # This path must be under this helm chart root directory.
+  # Feel free to copy config files to a temp folder before deploying
   configfolderglob: "configs/*"
 
   # all files from specified configmap (or configs folder) are mounted under `/tsung`
   configfile: "config.xml"
+
+  # The base of fully-qualified domain name of cluster.
+  # This is used to generate FQDNs of clients in XML file.
+  # Refer to template/_helpers.tpl for clients list XML generation code.
+  clusterbasename: "cluster.local"
 
 service:
   type: NodePort
