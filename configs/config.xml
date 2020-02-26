@@ -8,7 +8,7 @@
         <server host="traefik-expose.balancer" port="80" type="tcp"/>
     </servers>
     <load>
-        <arrivalphase phase="1" duration="10" unit="second">
+        <arrivalphase phase="1" duration="60" unit="second">
             <users arrivalrate="100" unit="second"/>
         </arrivalphase>
     </load>

@@ -27,14 +27,6 @@ service:
   type: NodePort
   externalPort: 32091
   internalPort: 8091
-  annotations: {}
-  extraLabels: {}
-
-master:
-  nodeSelector: {}
-  tolerations: {}
 
 slave:
   replicaCount: 4
-  nodeSelector: {}
-  tolerations: {}
