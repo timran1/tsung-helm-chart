@@ -9,5 +9,5 @@ metadata:
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     app: {{ template "tsung.fullname" . }}
 data:
-{{ (tpl (.Files.Glob "configs/*").AsConfig .) | indent 2 }}
+{{ (tpl (.Files.Glob (tpl `{{ .Values.config.configfolderglob }}` . ) ).AsConfig .) | indent 2 }}
 {{ end }}

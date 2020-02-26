@@ -10,6 +10,9 @@ config:
   # Optional parameter to use an existing configmap instead of deploying one with the Chart
   # configmapName: tsung-config
 
+  # Glob pattern to copy files into config map
+  configfolderglob: "configs/*"
+
   # all files from specified configmap (or configs folder) are mounted under `/tsung`
   configfile: "config.xml"
 
@@ -25,6 +28,6 @@ master:
   tolerations: {}
 
 slave:
-  replicaCount: 2
+  replicaCount: 4
   nodeSelector: {}
   tolerations: {}

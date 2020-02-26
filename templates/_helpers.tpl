@@ -42,6 +42,9 @@ Create fully qualified configmap name.
 {{ end }}
 {{- end -}}
 
+{{/*
+Create a list of clients addresses to be placed in config XML
+*/}}
 {{- define "tsung.clients" -}}
 {{- range until (int .Values.slave.replicaCount) }}
         <client host='{{ template "tsung.slave" $ }}-{{ . }}.{{ template "tsung.slave-svc" $ }}.{{ template "tsung.namespace" $ }}.svc.cluster.local'/>
