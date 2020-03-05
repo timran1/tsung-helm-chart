@@ -42,7 +42,7 @@ spec:
       initContainers:
       - name: init-wait
         image: busybox:1.28
-        command: ['sh', '-c', 'i=60; echo Waiting $i seconds for slaves to come up...; while [ $i -gt 0 ];do if [ $i -gt 9 ];then echo "$i";else  echo "$i";fi;sleep 1;i=`expr $i - 1`;done;exit 0']
+        command: ['sh', '-c', 'i={{ .Values.master.initialWaitTime }}; echo Waiting $i seconds for slaves to come up...; while [ $i -gt 0 ];do if [ $i -gt 9 ];then echo "$i";else  echo "$i";fi;sleep 1;i=`expr $i - 1`;done;exit 0']
       volumes:
       - name: config-volume
         configMap:

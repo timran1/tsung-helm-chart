@@ -28,5 +28,8 @@ service:
   externalPort: 32091
   internalPort: 8091
 
+master:
+  initialWaitTime: 20
+
 slave:
-  replicaCount: 4
+  replicaCount: 2
